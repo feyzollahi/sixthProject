@@ -3,6 +3,7 @@ package Repo;
 import Exceptions.ProjectNotFound;
 import Project.Project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProjectsRepo {
@@ -22,6 +23,9 @@ public class ProjectsRepo {
             throw new ProjectNotFound();
         }
         return project;
+    }
+    public ArrayList<Project> getAllProjects(){
+        return new ArrayList<>(this.projects.values());
     }
     public void addProject(Project project){
         this.projects.put(project.getId(), project);
