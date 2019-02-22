@@ -17,13 +17,13 @@ public class AllProjectsShowPage implements Page {
         String htmlString = FileUtils.readFileToString(htmlTemplateFile);
         ProjectsRepo projectsRepo = ProjectsRepo.getInstance();
         ArrayList<Project> allProjects = projectsRepo.getAllProjects();
-        String trs = "";
+        StringBuilder trs = new StringBuilder();
         for(Project project: allProjects){
             String tr = HTMLTr.generateTr(project.getId(), project.getTitle(), project.getBudget());
-            trs = trs + tr + "\n";
+            trs.append(tr).append("\n");
         }
 
-        htmlString = htmlString.replace("$trs", trs);
+        htmlString = htmlString.replace("$trs", trs.toString());
         String response = htmlString;
 
         httpExchange.sendResponseHeaders(200, response.getBytes().length);

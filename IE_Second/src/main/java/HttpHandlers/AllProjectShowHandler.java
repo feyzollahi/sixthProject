@@ -1,16 +1,13 @@
 package HttpHandlers;
 
-import Exceptions.ProjectNotFound;
 import Page.AllProjectsShowPage;
-import Page.SpecifiedProjectShowPage;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 
-public class AllProjectShowHandler implements HttpHandler {
+class AllProjectShowHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         try {
             AllProjectsShowPage page = new AllProjectsShowPage();

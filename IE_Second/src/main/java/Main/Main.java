@@ -23,13 +23,12 @@ import java.net.URL;
 import java.nio.file.Files;
 
 public class Main {
-    private static String projectRepoUrlText = "http://142.93.134.194:8000/joboonja/project";
-    private static String skillRepoUrlText = "http://142.93.134.194:8000/joboonja/skill";
-    private static String userJson;
+    private static final String projectRepoUrlText = "http://142.93.134.194:8000/joboonja/project";
+    private static final String skillRepoUrlText = "http://142.93.134.194:8000/joboonja/skill";
     public static void print(Object o){
         System.out.println(o);
     }
-    public static String getHTML(String urlToRead) throws Exception {
+    private static String getHTML(String urlToRead) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -42,46 +41,46 @@ public class Main {
         rd.close();
         return result.toString();
     }
-    public static void setUsersRepo() throws IOException, ParseException {
+    private static void setUsersRepo() throws IOException, ParseException {
         UsersRepo usersRepo = UsersRepo.getInstance();
         File userJsonFile = new File("src/main/resources/UserJson.txt");
         String userJsonStr = new String(Files.readAllBytes(userJsonFile.toPath()));
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         JSONParser parser = new JSONParser();
         jsonObject = (JSONObject) parser.parse(userJsonStr);
         User user = new User(jsonObject);
         usersRepo.addUser(user);
     }
-    public static void setProjectsRepo() throws Exception {
+    private static void setProjectsRepo() throws Exception {
         String projectsStr = getHTML(projectRepoUrlText);
         JSONParser jsonParser = new JSONParser();
         JSONArray projectsJsonArray = (JSONArray) jsonParser.parse(projectsStr);
 
         ProjectsRepo projectsRepo = ProjectsRepo.getInstance();
 
-        for(int i = 0; i < projectsJsonArray.size(); i++){
-            JSONObject projectJsonObj = (JSONObject) projectsJsonArray.get(i);
+        for (Object aProjectsJsonArray : projectsJsonArray) {
+            JSONObject projectJsonObj = (JSONObject) aProjectsJsonArray;
             Project project = new Project(projectJsonObj);
             projectsRepo.addProject(project);
         }
     }
-    public static void setSkillsRepo() throws Exception {
+    private static void setSkillsRepo() throws Exception {
         SkillsRepo skillsRepo = SkillsRepo.getInstance();
         String skillsStr = getHTML(skillRepoUrlText);
         JSONParser jsonParser = new JSONParser();
         JSONArray skillsJsonArray = (JSONArray) jsonParser.parse(skillsStr);
-        for(int i = 0; i < skillsJsonArray.size(); i++){
-            JSONObject skillJsonObj = (JSONObject) skillsJsonArray.get(i);
+        for (Object aSkillsJsonArray : skillsJsonArray) {
+            JSONObject skillJsonObj = (JSONObject) aSkillsJsonArray;
             skillsRepo.addSkill(new Skill(skillJsonObj));
         }
     }
-    public static void setRepos() throws Exception {
+    private static void setRepos() throws Exception {
 
         setProjectsRepo();
         setSkillsRepo();
         setUsersRepo();
     }
-    public static void startServer() throws Exception {
+    private static void startServer() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
         server.createContext("/", new JobOonjaHttpHandler());

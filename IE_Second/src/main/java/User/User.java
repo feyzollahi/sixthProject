@@ -16,10 +16,10 @@ public class User {
         this.jobTitle = (String) jsonObject.get("jobTitle");
         this.bio = (String) jsonObject.get("bio");
         this.skills = new HashMap<String, UserSkill>();
-        JSONArray skills = new JSONArray();
+        JSONArray skills;
         skills = (JSONArray) jsonObject.get("skills");
-        for(int i = 0; i < skills.size(); i++){
-            UserSkill skill = new UserSkill((JSONObject)skills.get(i));
+        for (Object skill1 : skills) {
+            UserSkill skill = new UserSkill((JSONObject) skill1);
             this.skills.put(skill.getName(), skill);
         }
     }

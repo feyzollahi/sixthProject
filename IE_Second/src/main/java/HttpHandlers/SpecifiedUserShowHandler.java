@@ -1,7 +1,5 @@
 package HttpHandlers;
 
-import Exceptions.BidNotFound;
-import Exceptions.ProjectNotFound;
 import Exceptions.UserNotFound;
 import Page.SpecifiedUserShowPage;
 import com.sun.net.httpserver.HttpExchange;

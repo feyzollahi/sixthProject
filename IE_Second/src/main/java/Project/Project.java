@@ -15,8 +15,8 @@ public class Project {
         this.skills = new HashMap<String, ProjectSkill>();
         this.title = project_data.get("title").toString();
         JSONArray array_skill = (JSONArray) project_data.get("skills");
-        for (int i = 0; i < array_skill.size(); i++) {
-            this.skills.put((((JSONObject) array_skill.get(i)).get("name")).toString(), new ProjectSkill((JSONObject) array_skill.get(i)));
+        for (Object anArray_skill : array_skill) {
+            this.skills.put((((JSONObject) anArray_skill).get("name")).toString(), new ProjectSkill((JSONObject) anArray_skill));
         }
         this.imageUrlText = (String) project_data.get("imageUrl");
         this.budget = (Long) project_data.get("budget");

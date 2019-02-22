@@ -16,7 +16,7 @@ public class SkillsRepo {
         }
         return skillsRepo;
     }
-    ArrayList<Skill> skills;
+    private ArrayList<Skill> skills;
 
 
     public ArrayList<Skill> getSkills() {

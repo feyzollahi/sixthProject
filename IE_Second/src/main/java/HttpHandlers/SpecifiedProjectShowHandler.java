@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class SpecifiedProjectShowHandler implements HttpHandler{
+class SpecifiedProjectShowHandler implements HttpHandler{
 
     public void handle(HttpExchange httpExchange) throws IOException {
         String projectId = "";
