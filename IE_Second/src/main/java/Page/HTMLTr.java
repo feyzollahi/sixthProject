@@ -9,7 +9,6 @@ public class HTMLTr {
 
         ).render();
 
-        System.out.println(tr);
         return tr;
     }
 }

@@ -24,7 +24,6 @@ public class AllProjectsShowPage implements Page {
         }
 
         htmlString = htmlString.replace("$trs", trs);
-        System.out.println(htmlString);
         String response = htmlString;
 
         httpExchange.sendResponseHeaders(200, response.getBytes().length);

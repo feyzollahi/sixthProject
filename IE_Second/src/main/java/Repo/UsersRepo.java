@@ -1,5 +1,6 @@
 package Repo;
 
+import Exceptions.UserNotFound;
 import User.User;
 
 import java.util.HashMap;
@@ -18,7 +19,10 @@ public class UsersRepo {
     public void addUser(User user){
         users.put(user.getId(), user);
     }
-    public User getUserById(String id){
+    public User getUserById(String id) throws UserNotFound {
+        User user = this.users.get(id);
+        if(user == null)
+            throw new UserNotFound();
         return users.get(id);
     }
 

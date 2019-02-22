@@ -22,7 +22,7 @@ public class SpecifiedUserShowHandler implements HttpHandler {
             e.printStackTrace();
             String response =
                     "<html>"
-                            + "<body>Page \""+ userId + "\" not found.</body>"
+                            + "<body>user with id: \""+ userId + "\" not found.</body>"
                             + "</html>";
             httpExchange.sendResponseHeaders(404, response.length());
             OutputStream os = httpExchange.getResponseBody();

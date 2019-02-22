@@ -8,5 +8,5 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 
 public interface Page {
-    public void HandleRequest(HttpExchange httpExchange) throws IOException, ProjectNotFound, UserNotFound;
+    void HandleRequest(HttpExchange httpExchange) throws IOException, ProjectNotFound, UserNotFound;
 }

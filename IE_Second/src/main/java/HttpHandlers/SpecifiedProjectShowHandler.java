@@ -23,7 +23,7 @@ public class SpecifiedProjectShowHandler implements HttpHandler{
             e.printStackTrace();
             String response =
                     "<html>"
-                            + "<body>Page \""+ projectId + "\" not found.</body>"
+                            + "<body>project with id: \""+ projectId + "\" not found.</body>"
                             + "</html>";
             httpExchange.sendResponseHeaders(404, response.length());
             OutputStream os = httpExchange.getResponseBody();

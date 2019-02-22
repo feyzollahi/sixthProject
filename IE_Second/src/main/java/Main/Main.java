@@ -5,23 +5,22 @@ import Project.Project;
 import Repo.ProjectsRepo;
 import Repo.SkillsRepo;
 import Repo.UsersRepo;
-import User.User;
 import Skill.Skill;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
+import User.User;
 import com.sun.net.httpserver.HttpServer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.StringTokenizer;
 
 public class Main {
     private static String projectRepoUrlText = "http://142.93.134.194:8000/joboonja/project";
