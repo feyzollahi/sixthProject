@@ -11,19 +11,19 @@ import java.util.StringTokenizer;
 
 public class JobOonjaHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
-        StringTokenizer tokenizer = new StringTokenizer(httpExchange.getRequestURI().getPath(), "/");
+        String path = httpExchange.getRequestURI().toString();
+        String[] tokens = path.split("/");
         System.out.println(httpExchange.getRequestURI().getPath());
-        String context = tokenizer.nextToken();
 
-        if(tokenizer.hasMoreTokens()){
-            if(context.equals("project"))
+        if(tokens.length > 2){
+            if(tokens[1].equals("project"))
                 new SpecifiedProjectShowHandler().handle(httpExchange);
-            else if(context.equals("user")){
+            else if(tokens[1].equals("user")){
                 new SpecifiedUserShowHandler().handle(httpExchange);
             }
         }
         else{
-            if(context.equals("project")){
+            if(tokens[1].equals("project")){
                 new AllProjectShowHandler().handle(httpExchange);
             }
         }

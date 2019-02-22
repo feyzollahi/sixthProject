@@ -2,13 +2,26 @@ package User;
 
 
 import Skill.UserSkill;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 
 public class User {
     public User(JSONObject jsonObject) {
-
+        this.bio = (String) jsonObject.get("bio");
+        this.firstName = (String) jsonObject.get("firstName");
+        this.lastName = (String) jsonObject.get("lastName");
+        this.id = (String) jsonObject.get("id");
+        this.jobTitle = (String) jsonObject.get("jobTitle");
+        this.bio = (String) jsonObject.get("bio");
+        this.skills = new HashMap<String, UserSkill>();
+        JSONArray skills = new JSONArray();
+        skills = (JSONArray) jsonObject.get("skills");
+        for(int i = 0; i < skills.size(); i++){
+            UserSkill skill = new UserSkill((JSONObject)skills.get(i));
+            this.skills.put(skill.getName(), skill);
+        }
     }
     private String bio;
     private String firstName;

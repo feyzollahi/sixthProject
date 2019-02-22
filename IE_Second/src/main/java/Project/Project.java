@@ -18,6 +18,7 @@ public class Project {
         for (int i = 0; i < array_skill.size(); i++) {
             this.skills.put((((JSONObject) array_skill.get(i)).get("name")).toString(), new ProjectSkill((JSONObject) array_skill.get(i)));
         }
+        this.imageUrlText = (String) project_data.get("imageUrl");
         this.budget = (Long) project_data.get("budget");
         this.id = (String) project_data.get("id");
         this.deadline = (Long) project_data.get("deadline");
@@ -33,6 +34,16 @@ public class Project {
     private long deadline;
     private HashMap<String, Bid> bids;
     private User winnerUser;
+    private String imageUrlText;
+
+
+    public String getImageUrlText() {
+        return imageUrlText;
+    }
+
+    public void setImageUrlText(String imageUrlText) {
+        this.imageUrlText = imageUrlText;
+    }
 
     public void addBid(Bid bid) {
         this.bids.put(bid.getBiddingUser().getId(), bid);

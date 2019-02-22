@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class UserSkill extends Skill {
     public UserSkill(JSONObject data) {
         this.setName(data.get("name").toString());
-        this.tempSetEndorsedCount((Integer) data.get("endorsedCount"));
+        this.tempSetEndorsedCount((Long) data.get("endorsedCount"));
 
         this.endorsers = new HashMap<String, User>();
     }
@@ -22,11 +22,11 @@ public class UserSkill extends Skill {
     public int getEndorsedCount() {
         return this.endorsers.size();
     }
-    int tempEndorsedCount;
-    public void tempSetEndorsedCount(int endorsedCount) {
+    long tempEndorsedCount;
+    public void tempSetEndorsedCount(long endorsedCount) {
         this.tempEndorsedCount = tempEndorsedCount;
     }
-    public int tempGetEndorsedCount(){
+    public long tempGetEndorsedCount(){
         return this.tempEndorsedCount;
     }
 
