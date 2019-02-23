@@ -1,6 +1,8 @@
 package User;
 
 
+import Project.Project;
+import Skill.ProjectSkill;
 import Skill.UserSkill;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 
 public class User {
     public User(JSONObject jsonObject) {
+        this.isLogin = false;
         this.bio = (String) jsonObject.get("bio");
         this.firstName = (String) jsonObject.get("firstName");
         this.lastName = (String) jsonObject.get("lastName");
@@ -23,6 +26,7 @@ public class User {
             this.skills.put(skill.getName(), skill);
         }
     }
+    private boolean isLogin;
     private String bio;
     private String firstName;
     private String lastName;
@@ -30,6 +34,27 @@ public class User {
     private String jobTitle;
     private String profilePictureURLText;
     private HashMap<String, UserSkill> skills;
+
+    public boolean isUserApproprateForProject(Project project){
+        for(ProjectSkill projectSkill:project.getSkills()){
+            if(this.skills.get(projectSkill.getName()) == null
+            || this.skills.get(projectSkill.getName()).tempGetEndorsedCount() < projectSkill.getPoint()){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
+    public void login(){
+        isLogin = true;
+    }
 
     public String getBio() {
         return bio;

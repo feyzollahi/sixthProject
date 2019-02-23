@@ -3,6 +3,7 @@ package Repo;
 import Exceptions.UserNotFound;
 import User.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UsersRepo {
@@ -16,6 +17,24 @@ public class UsersRepo {
         return singleUsersRepo;
     }
     private HashMap<String, User> users;
+    public boolean isUserLogin(String userId){
+        if(users.get(userId) == null){
+            return false;
+        }
+        else
+            return users.get(userId).isLogin();
+    }
+    public ArrayList<User> getLoginUsers(){
+        ArrayList<User> loginUsers =  new ArrayList<User>();
+        for(User user:this.users.values()){
+            if(user.isLogin())
+                loginUsers.add(user);
+        }
+        return loginUsers;
+    }
+    public User tempGetLoginUser() throws UserNotFound {
+        return getUserById("1");
+    }
     public void addUser(User user){
         users.put(user.getId(), user);
     }

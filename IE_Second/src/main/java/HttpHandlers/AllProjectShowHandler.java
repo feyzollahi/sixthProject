@@ -1,5 +1,6 @@
 package HttpHandlers;
 
+import Exceptions.UserNotFound;
 import Page.AllProjectsShowPage;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -13,7 +14,7 @@ class AllProjectShowHandler implements HttpHandler {
             AllProjectsShowPage page = new AllProjectsShowPage();
 
             page.HandleRequest(httpExchange);
-        } catch (SecurityException e) {
+        } catch (SecurityException | UserNotFound e) {
             e.printStackTrace();
             String response =
                     "<html>"

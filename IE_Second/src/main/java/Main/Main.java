@@ -49,6 +49,7 @@ public class Main {
         JSONParser parser = new JSONParser();
         jsonObject = (JSONObject) parser.parse(userJsonStr);
         User user = new User(jsonObject);
+        user.login();
         usersRepo.addUser(user);
     }
     private static void setProjectsRepo() throws Exception {
@@ -90,6 +91,5 @@ public class Main {
     public static void main(String[] args) throws Exception {
         setRepos();
         startServer();
-
     }
 }

@@ -17,14 +17,14 @@ public class UserSkill extends Skill {
         this.setName(name);
         this.endorsers = new HashMap<String, User>();
     }
-    HashMap<String,User> endorsers;
+    private HashMap<String,User> endorsers;
 
     public int getEndorsedCount() {
         return this.endorsers.size();
     }
-    long tempEndorsedCount;
+    private long tempEndorsedCount;
     public void tempSetEndorsedCount(long endorsedCount) {
-        this.tempEndorsedCount = tempEndorsedCount;
+        this.tempEndorsedCount = endorsedCount;
     }
     public long tempGetEndorsedCount(){
         return this.tempEndorsedCount;

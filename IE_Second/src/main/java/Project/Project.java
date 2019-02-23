@@ -36,7 +36,16 @@ public class Project {
     private User winnerUser;
     private String imageUrlText;
 
+    public boolean isUserAppropriateForProject(User user){
 
+        for(ProjectSkill skill: skills.values()){
+            if(user.getSkills().get(skill.getName()) == null
+            || user.getSkills().get(skill.getName()).tempGetEndorsedCount() < skill.getPoint()){
+                return false;
+            }
+        }
+        return true;
+    }
     public String getImageUrlText() {
         return imageUrlText;
     }
