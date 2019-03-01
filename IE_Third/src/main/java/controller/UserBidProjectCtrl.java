@@ -1,5 +1,5 @@
-@javax.servlet.annotation.WebServlet(name = "showAllUsersCtrl")
-public class ShowAllUsersCtrl extends javax.servlet.http.HttpServlet {
+@javax.servlet.annotation.WebServlet(name = "userBidProjectCtrl")
+public class UserBidProjectCtrl extends javax.servlet.http.HttpServlet {
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, java.io.IOException {
 
     }

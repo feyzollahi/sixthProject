@@ -1,4 +1,5 @@
 package model.Exceptions;
 
-public class SkillNotFound {
+public class SkillNotFound extends Exception {
+
 }
