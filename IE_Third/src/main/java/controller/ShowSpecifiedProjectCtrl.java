@@ -3,6 +3,7 @@ package controller;
 import model.Repo.GetRepo;
 import model.Repo.ProjectsRepo;
 import model.Repo.UsersRepo;
+import model.User.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,14 +21,28 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         GetRepo.print("showSpecifiedProjectCtrl");
         String projectId = request.getParameter("projectId");
-        request.removeAttribute("projects");
+        boolean isLegal = false;
         try {
-            request.setAttribute("project", ProjectsRepo.getInstance().getProjectById(projectId));
-            request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
-            GetRepo.print("specifiedPro send");
-            request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+            isLegal = ProjectsRepo.getInstance().getProjectById(projectId).isUserAppropriateForProject(UsersRepo.getInstance().getLoginUser());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        request.removeAttribute("projects");
+        if (isLegal){
+            try {
+                request.setAttribute("project", ProjectsRepo.getInstance().getProjectById(projectId));
+                request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
+                GetRepo.print("specifiedPro send");
+                request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            User user = UsersRepo.getInstance().getLoginUser();
+            request.setAttribute("forbiddenMsg", "Sorry!\n " + user.getFirstName() + " " + user.getLastName()
+             + " can not see the project! because he/she does not have enough skills for it.");
+            request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+
         }
     }
 }

@@ -27,33 +27,35 @@
 </form>
 <%String projectId = request.getParameter("projectId");
     GetRepo.print("specifiedProject.jsp");
-Project project = (Project) request.getAttribute("project");
-if(project == null){
-    GetRepo.print("project is null");
-}
-String userId = (String) request.getAttribute("userId");%>
-<%if(request.getAttribute("BidMsg") != null){%>
-<h3 style="color:blue"><%=request.getAttribute("BidMsg")%></h3>
-<%}if(request.getAttribute("BidErrorMsg") != null){%>
-    <h3 style="color:red"><%=request.getAttribute("BidErrorMsg")%></h3>
-<%}if(request.getAttribute("BidInvalidMsg") != null){%>
-<h3 style="color:red"><%=request.getAttribute("BidInvalidMsg")%></h3>
-<%}%>
-<ul>
-    <li>id: <%=project.getId()%></li>
-    <li>title: <%=project.getTitle()%></li>
-    <li>description: <%=project.getDescription()%></li>
-    <li>imageUrl: <img src="<%=project.getImageUrlText()%>" style="width: 50px; height: 50px;"></li>
-    <li>budget: <%=project.getBudget()%></li>
-</ul>
-<!-- display form if user has not bidded before -->
-<%if(!project.userHasBid(userId)){%>
-    <form action="userBidProjectCtrl" method="GET">
-        <label for="bidAmount">Bid Amount:</label>
-        <input type="number" id="bidAmount" name="bidAmount"/>
-        <input type="hidden" name="projectId" value="<%=project.getId()%>"/>
-        <button>Submit</button>
-    </form>
+if(request.getAttribute("forbiddenMsg") != null){%>
+    <h3 style="color:red"><%=request.getAttribute("forbiddenMsg")%></h3>
+<%}else{
+    Project project = (Project) request.getAttribute("project");
+
+    String userId = (String) request.getAttribute("userId");%>
+    <%if(request.getAttribute("BidMsg") != null){%>
+    <h3 style="color:blue"><%=request.getAttribute("BidMsg")%></h3>
+    <%}if(request.getAttribute("BidErrorMsg") != null){%>
+        <h3 style="color:red"><%=request.getAttribute("BidErrorMsg")%></h3>
+    <%}if(request.getAttribute("BidInvalidMsg") != null){%>
+    <h3 style="color:red"><%=request.getAttribute("BidInvalidMsg")%></h3>
+    <%}%>
+    <ul>
+        <li>id: <%=project.getId()%></li>
+        <li>title: <%=project.getTitle()%></li>
+        <li>description: <%=project.getDescription()%></li>
+        <li>imageUrl: <img src="<%=project.getImageUrlText()%>" style="width: 50px; height: 50px;"></li>
+        <li>budget: <%=project.getBudget()%></li>
+    </ul>
+    <!-- display form if user has not bidded before -->
+    <%if(!project.userHasBid(userId)){%>
+        <form action="userBidProjectCtrl" method="GET">
+            <label for="bidAmount">Bid Amount:</label>
+            <input type="number" id="bidAmount" name="bidAmount"/>
+            <input type="hidden" name="projectId" value="<%=project.getId()%>"/>
+            <button>Submit</button>
+        </form>
+    <%}%>
 <%}%>
 </body>
 </html>

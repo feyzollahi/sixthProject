@@ -1,4 +1,3 @@
-<%@ page import="model.Repo.UsersRepo" %>
 <%@ page import="model.User.User" %>
 <%@ page import="model.Repo.GetRepo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,6 +13,7 @@
             text-align: center;
             margin: 0 auto;
         }
+
         td {
             min-width: 300px;
             margin: 5px 5px 5px 5px;
@@ -22,27 +22,19 @@
     </style>
 </head>
 <body>
-<%GetRepo.print("homePage.jsp");%>
-<table>
-    <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>jobTitle</th>
-        <th>login</th>
-    </tr>
-    <%for(User user: UsersRepo.getInstance().getAllUsers()){%>
-        <tr>
-            <th><%=user.getId()%></th>
-            <th><%=user.getFirstName() + " " + user.getLastName()%></th>
-            <th><%=user.getJobTitle()%></th>
-            <th>
-                <form action="homePageCtrl" method="GET">
-                    <input type="hidden" name="userId" value="<%= user.getId()%>"/>
-                    <button>login</button>
-                </form>
-            </th>
-        </tr>
-    <%}%>
-</table>
+<%
+    GetRepo.print("homePage.jsp");
+    User user = (User) request.getAttribute("user");
+%>
+<form action="showAllUsersCtrl" method="GET">
+    <button>مشاهده تمام کاربران</button>
+</form>
+<form action="showAllProjects" method="GET">
+    <button>مشاهده تمام پروژه ها</button>
+</form>
+<form action="userOwnPage.jsp" method="GET">
+    <button>پروفایل</button>
+</form>
+<h2 style="color: blue;"><%=user.getFirstName() + " " + user.getLastName()%> خوش آمدی </h2>
 </body>
 </html>

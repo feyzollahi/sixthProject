@@ -33,7 +33,9 @@ public class homeServlet extends HttpServlet {
             GetRepo.print("homeServlet");
             if(!GetRepo.isSetRepo) {
                 GetRepo.setRepo();
+                UsersRepo.getInstance().setLoginUser("1");//ali sharifzadeh
             }
+            request.setAttribute("user", UsersRepo.getInstance().getLoginUser());
             request.getRequestDispatcher("homePage.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
