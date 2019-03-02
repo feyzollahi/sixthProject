@@ -1,10 +1,31 @@
-@javax.servlet.annotation.WebServlet(name = "showAllProjects")
-public class ShowAllProjects extends javax.servlet.http.HttpServlet {
-    protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, java.io.IOException {
+package controller;
+
+import model.Project.Project;
+import model.Repo.ProjectsRepo;
+import model.Repo.UsersRepo;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+
+@WebServlet("/showAllProjects")
+public class ShowAllProjects extends HttpServlet {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, java.io.IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ArrayList<Project> matchingProjects = null;
+        try {
+            matchingProjects = ProjectsRepo.getInstance().getProjectFilteredByUserSkills(UsersRepo.getInstance().getLoginUser());
+            request.setAttribute("projects", matchingProjects);
+            request.getRequestDispatcher("showAllProjects.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

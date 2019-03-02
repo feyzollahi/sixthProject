@@ -12,18 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/showAllUsersCtrl")
-public class ShowAllUsersCtrl extends HttpServlet {
+@WebServlet("/showSpecifiedUserCtrl")
+public class ShowSpecifiedUserCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!GetRepo.isSetRepo){
-            GetRepo.print("not setRepo ShowAllUsersCtrl");
+            GetRepo.print("not setRepo ShowSpecifiedUserCtrl");
             request.getRequestDispatcher("").forward(request, response);
         }
-        GetRepo.print("showAllUsersCtrl");
+        GetRepo.print("showSpecifiedUserCtrl");
         String userId = request.getParameter("userId");
         try {
             User user = UsersRepo.getInstance().getUserById(userId);

@@ -1,10 +1,13 @@
-package Repo;
+package model.Repo;
 
-import Skill.Skill;
+import model.Skill.Skill;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 
 public class SkillsRepo {
+    private static final String skillRepoUrlText = "http://142.93.134.194:8000/joboonja/skill";
 
     private static SkillsRepo skillsRepo = null;
     private SkillsRepo(){
@@ -29,5 +32,12 @@ public class SkillsRepo {
 
     public void addSkill(Skill skill) {
         this.skills.add(skill);
+    }
+    public void setRepo() throws Exception {
+        Object obj = GetRepo.getHTML(skillRepoUrlText);
+        JSONArray skillJsonArr = (JSONArray) obj;
+        for(Object skillObj: skillJsonArr){
+            this.addSkill(new Skill((JSONObject)skillObj));
+        }
     }
 }

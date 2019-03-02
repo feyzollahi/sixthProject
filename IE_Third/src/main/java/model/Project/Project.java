@@ -1,8 +1,9 @@
-package Project;
+package model.Project;
 
-import Bid.Bid;
-import Skill.ProjectSkill;
-import User.User;
+import model.Bid.Bid;
+import model.Exceptions.BidNotFound;
+import model.Skill.ProjectSkill;
+import model.User.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -23,7 +24,7 @@ public class Project {
         this.id = (String) project_data.get("id");
         this.deadline = (Long) project_data.get("deadline");
         this.description = (String) project_data.get("description");
-
+        this.bids = new HashMap<String, Bid>();
     }
 
     private HashMap<String, ProjectSkill> skills;
@@ -40,7 +41,7 @@ public class Project {
 
         for(ProjectSkill skill: skills.values()){
             if(user.getSkills().get(skill.getName()) == null
-            || user.getSkills().get(skill.getName()).tempGetEndorsedCount() < skill.getPoint()){
+            || user.getSkills().get(skill.getName()).getEndorsedCount() < skill.getPoint()){
                 return false;
             }
         }
@@ -58,10 +59,20 @@ public class Project {
         this.bids.put(bid.getBiddingUser().getId(), bid);
     }
 
-    public Bid getBid(String userId) {
-        return bids.get(userId);
+    public Bid getBid(String userId) throws BidNotFound {
+        if(this.bids.get(userId) == null){
+            throw new BidNotFound();
+        }
+        return this.bids.get(userId);
     }
-
+    public boolean userHasBid(String userId){
+        try {
+            Bid bid = this.getBid(userId);
+            return true;
+        } catch (BidNotFound bidNotFound) {
+            return false;
+        }
+    }
     public User getWinnerUser() {
         return winnerUser;
     }

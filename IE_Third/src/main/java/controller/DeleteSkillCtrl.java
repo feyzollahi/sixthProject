@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/deleteSkill")
-public class DeleteSkill extends HttpServlet {
+public class DeleteSkillCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -28,7 +28,7 @@ public class DeleteSkill extends HttpServlet {
             skillNotFound.printStackTrace();
         }
         request.setAttribute("deleteMsg","skill " + "\"" + skillName + "\"" + " was removed from user " + user.getFirstName()
-        + " " + user.getLastName() + " list skills");
+        + " " + user.getLastName() + " skills list");
         request.getRequestDispatcher("userOwnPage.jsp").forward(request, response);
 
     }

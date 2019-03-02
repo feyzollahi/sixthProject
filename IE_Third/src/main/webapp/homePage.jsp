@@ -1,5 +1,8 @@
 <%@ page import="model.Repo.UsersRepo" %>
 <%@ page import="model.User.User" %>
+<%@ page import="model.Repo.GetRepo" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +22,7 @@
     </style>
 </head>
 <body>
-<meta charset="UTF-8">
+<%GetRepo.print("homePage.jsp");%>
 <table>
     <tr>
         <th>id</th>
@@ -34,7 +37,7 @@
             <th><%=user.getJobTitle()%></th>
             <th>
                 <form action="homePageCtrl" method="GET">
-                    <input type="hidden" name="id" value="<%= user.getId()%>"/>
+                    <input type="hidden" name="userId" value="<%= user.getId()%>"/>
                     <button>login</button>
                 </form>
             </th>

@@ -32,8 +32,14 @@
 <%if(request.getAttribute("addMsg") != null){%>
     <h3 style="color: blue"><%=request.getAttribute("addMsg")%></h3>
 <%}%>
-    <form action="showAllUsers.jsp" method="GET">
+    <form action="showAllUsersCtrl" method="GET">
         <button>مشاهده تمام کاربران</button>
+    </form>
+    <form action="showAllProjects" method="GET">
+        <button>مشاهده تمام پروژه ها</button>
+    </form>
+    <form action="homeServlet" method="GET">
+        <button>مشاهده صفحه اول</button>
     </form>
     <ul>
 

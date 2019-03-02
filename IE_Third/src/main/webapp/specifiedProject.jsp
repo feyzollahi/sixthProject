@@ -22,10 +22,23 @@
 <form action="homeServlet" method="GET">
     <button>مشاهده صفحه اول</button>
 </form>
+<form action="userOwnPage.jsp" method="GET">
+    <button>پروفایل</button>
+</form>
 <%String projectId = request.getParameter("projectId");
     GetRepo.print("specifiedProject.jsp");
 Project project = (Project) request.getAttribute("project");
+if(project == null){
+    GetRepo.print("project is null");
+}
 String userId = (String) request.getAttribute("userId");%>
+<%if(request.getAttribute("BidMsg") != null){%>
+<h3 style="color:blue"><%=request.getAttribute("BidMsg")%></h3>
+<%}if(request.getAttribute("BidErrorMsg") != null){%>
+    <h3 style="color:red"><%=request.getAttribute("BidErrorMsg")%></h3>
+<%}if(request.getAttribute("BidInvalidMsg") != null){%>
+<h3 style="color:red"><%=request.getAttribute("BidInvalidMsg")%></h3>
+<%}%>
 <ul>
     <li>id: <%=project.getId()%></li>
     <li>title: <%=project.getTitle()%></li>

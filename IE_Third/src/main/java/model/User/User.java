@@ -1,9 +1,12 @@
-package User;
+package model.User;
 
 
-import Project.Project;
-import Skill.ProjectSkill;
-import Skill.UserSkill;
+import model.Bid.Bid;
+import model.Exceptions.SkillNotFound;
+import model.Exceptions.UserSkillNotFound;
+import model.Project.Project;
+import model.Skill.ProjectSkill;
+import model.Skill.UserSkill;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -19,6 +22,7 @@ public class User {
         this.jobTitle = (String) jsonObject.get("jobTitle");
         this.bio = (String) jsonObject.get("bio");
         this.skills = new HashMap<String, UserSkill>();
+        this.bids = new HashMap<String, Bid>();
         JSONArray skills;
         skills = (JSONArray) jsonObject.get("skills");
         for (Object skill1 : skills) {
@@ -34,11 +38,12 @@ public class User {
     private String jobTitle;
     private String profilePictureURLText;
     private HashMap<String, UserSkill> skills;
+    private HashMap<String, Bid> bids;
 
     public boolean isUserApproprateForProject(Project project){
         for(ProjectSkill projectSkill:project.getSkills()){
             if(this.skills.get(projectSkill.getName()) == null
-            || this.skills.get(projectSkill.getName()).tempGetEndorsedCount() < projectSkill.getPoint()){
+            || this.skills.get(projectSkill.getName()).getEndorsedCount() < projectSkill.getPoint()){
                 return false;
             }
         }
@@ -47,7 +52,11 @@ public class User {
     public boolean isLogin() {
         return isLogin;
     }
-
+    public void removeSkill(String skillName) throws SkillNotFound {
+        if(this.skills.get(skillName) == null)
+            throw new SkillNotFound();
+        this.skills.remove(skillName);
+    }
     public void setLogin(boolean login) {
         isLogin = login;
     }
@@ -55,7 +64,7 @@ public class User {
     public void login(){
         isLogin = true;
     }
-
+    public void logout(){isLogin = false;}
     public String getBio() {
         return bio;
     }
@@ -111,8 +120,21 @@ public class User {
     public void setSkills(HashMap<String, UserSkill> skills) {
         this.skills = skills;
     }
-
+    public void addBid(Bid bid){
+        this.bids.put(bid.getProject().getId(), bid);
+    }
     public void addSkill(UserSkill skill){
         this.skills.put(skill.getName(), skill);
+    }
+    public void addEndorserToSkills(String skillName, User endorser) throws UserSkillNotFound {
+        UserSkill skill = this.skills.get(skillName);
+        if(skill == null)
+            throw new UserSkillNotFound();
+        skill.addEndorser(endorser);
+    }
+    public void deleteSkill(String skillName) throws SkillNotFound {
+        if(this.skills.get(skillName) == null)
+            throw new SkillNotFound();
+        this.skills.remove(skillName);
     }
 }

@@ -1,4 +1,4 @@
-package Skill;
+package model.Skill;
 
 import org.json.simple.JSONObject;
 

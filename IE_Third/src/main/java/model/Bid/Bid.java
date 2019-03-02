@@ -1,4 +1,4 @@
-package Bid;
+package model.Bid;
 
 import model.Exceptions.ProjectNotFound;
 import model.Exceptions.UserNotFound;
@@ -25,6 +25,16 @@ public class Bid {
         this.bidAmount = (Integer) jsonObject.get("bidAmount");
         this.biddingUser = user;
         this.project = project;
+    }
+    public Bid(User user, Project project, int bidAmount) throws Exception{
+        this.biddingUser = user;
+        this.project = project;
+        this.bidAmount = bidAmount;
+    }
+    public boolean isValid(){
+        if(project.getBudget() < bidAmount)
+            return false;
+        return true;
     }
     private User biddingUser;
     private int bidAmount;

@@ -1,6 +1,6 @@
-package Skill;
+package model.Skill;
 
-import User.User;
+import model.User.User;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class UserSkill extends Skill {
     public UserSkill(JSONObject data) {
         this.setName(data.get("name").toString());
-        this.tempSetEndorsedCount((Long) data.get("endorsedCount"));
+        this.initialEndorsedCount = (Long) data.get("endorsedCount");
 
         this.endorsers = new HashMap<String, User>();
     }
@@ -18,16 +18,13 @@ public class UserSkill extends Skill {
         this.endorsers = new HashMap<String, User>();
     }
     private HashMap<String,User> endorsers;
+    private long initialEndorsedCount;
+    public long getEndorsedCount() {
+        return this.endorsers.size() + initialEndorsedCount;
+    }
 
-    public int getEndorsedCount() {
-        return this.endorsers.size();
-    }
-    private long tempEndorsedCount;
-    public void tempSetEndorsedCount(long endorsedCount) {
-        this.tempEndorsedCount = endorsedCount;
-    }
-    public long tempGetEndorsedCount(){
-        return this.tempEndorsedCount;
+    public boolean isEndorser(String userId){
+        return this.endorsers.get(userId) != null;
     }
 
     public ArrayList<User> getEndorsers() {
