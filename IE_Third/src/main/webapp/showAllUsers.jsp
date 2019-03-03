@@ -9,12 +9,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    if(!GetRepo.isSetRepo){
-        GetRepo.print("not setRepo showAllUsers.jsp");
-        request.getRequestDispatcher("").forward(request, response);
-    }
-%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
+<%--<%--%>
+    <%--if(!GetRepo.isSetRepo){--%>
+        <%--GetRepo.print("not setRepo showAllUsers.jsp");--%>
+        <%--request.getRequestDispatcher("").forward(request, response);--%>
+    <%--}--%>
+<%--%>--%>
+<c:choose>
+    <c:when test="${!GetRepo.isSetRepo}">
+        <c:out value="${GetRepo.print(\"not setRepo showAllUsers.jsp\")}" />
+        <c:out value="${request.getRequestDispatcher(\"\").forward(request, response)}" />
+    </c:when>
+</c:choose>
 <html>
 <head>
     <title>مشاهده تمام کاربران</title>
@@ -42,21 +50,23 @@
         <th>jobTitle</th>
         <th>مشاهده</th>
     </tr>
-    <%for(User user: users){
-        if(user.getId() != loginUser.getId()){%>
-            <tr>
-                <th><%=user.getId()%></th>
-                <th><%=user.getFirstName() + " " + user.getLastName()%></th>
-                <th><%=user.getJobTitle()%></th>
-                <th>
-                    <form action="showSpecifiedUserCtrl" method="GET">
-                        <input type="hidden" name="userId" value="<%= user.getId()%>"/>
-                        <button>مشاهده</button>
-                    </form>
-                </th>
-            </tr>
-        <%}%>
-    <%}%>
+    <c:forEach var="user" items="${users}">
+        <c:choose>
+            <c:when test = "${user.getId() != loginUser.getId()}" >
+                <tr>
+                    <th><c:out value="${user.getId()}"/></th>
+                    <th><c:out value ="${user.getFirstName()} ${user.getLastName()}" /></th>
+                    <th><c:out value="${user.getJobTitle()}"/></th>
+                    <th>
+                        <form action="showSpecifiedUserCtrl" method="GET">
+                            <input type="hidden" name="userId" value="<c:out value= "${user.getId()}"/>"/>
+                            <button>مشاهده</button>
+                        </form>
+                    </th>
+                </tr>
+            </c:when>
+        </c:choose>
+    </c:forEach>
 </table>
 </body>
 </html>

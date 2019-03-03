@@ -8,6 +8,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Project</title>
@@ -25,37 +27,51 @@
 <form action="userOwnPage.jsp" method="GET">
     <button>پروفایل</button>
 </form>
-<%String projectId = request.getParameter("projectId");
-    GetRepo.print("specifiedProject.jsp");
-if(request.getAttribute("forbiddenMsg") != null){%>
-    <h3 style="color:red"><%=request.getAttribute("forbiddenMsg")%></h3>
-<%}else{
-    Project project = (Project) request.getAttribute("project");
-
-    String userId = (String) request.getAttribute("userId");%>
-    <%if(request.getAttribute("BidMsg") != null){%>
-    <h3 style="color:blue"><%=request.getAttribute("BidMsg")%></h3>
-    <%}if(request.getAttribute("BidErrorMsg") != null){%>
-        <h3 style="color:red"><%=request.getAttribute("BidErrorMsg")%></h3>
-    <%}if(request.getAttribute("BidInvalidMsg") != null){%>
-    <h3 style="color:red"><%=request.getAttribute("BidInvalidMsg")%></h3>
-    <%}%>
+<c:set var="projectId" value = "${request.getParameter(\"projectId\")}"/>
+<c:out value = "${GetRepo.print(\"specifiedProject.jsp\")}"/>
+<%--<%String projectId = request.getParameter("projectId");--%>
+    <%--GetRepo.print("specifiedProject.jsp");--%>
+<c:choose>
+<c:when test = "${not empty forbiddenMsg}">
+<%--if(request.getAttribute("forbiddenMsg") != null){%>--%>
+    <h3 style="color:red"><c:out value="${forbiddenMsg}"/></h3>
+</c:when>
+<c:otherwise>
+    <%--userId and project attribute is defined--%>
+    <c:choose>
+    <c:when test = "${not empty BidMsg}">
+    <h3 style="color:blue"><c:out value ="${BidMsg}"/></h3>
+    </c:when>
+    </c:choose>
+    <c:choose>
+    <c:when test = "${not empty BidErrorMsg}">
+    <h3 style="color:red"><c:out value = "${BidErrorMsg}"/></h3>
+    </c:when>
+    </c:choose>
+    <c:choose>
+    <c:when test="${not empty BidInvalidMsg}">
+    <h3 style="color:red"><c:out value="${BidInvalidMsg}"/></h3>
+    </c:when>
+    </c:choose>
     <ul>
-        <li>id: <%=project.getId()%></li>
-        <li>title: <%=project.getTitle()%></li>
-        <li>description: <%=project.getDescription()%></li>
-        <li>imageUrl: <img src="<%=project.getImageUrlText()%>" style="width: 50px; height: 50px;"></li>
-        <li>budget: <%=project.getBudget()%></li>
+        <li>id: <c:out value="${project.getId()}"/></li>
+        <li>title: <c:out value="${project.getTitle()}"/></li>
+        <li>description: <c:out value="${project.getDescription()}"/></li>
+        <li>imageUrl: <img src="<c:out value="${project.getImageUrlText()}"/>" style="width: 50px; height: 50px;"></li>
+        <li>budget: <c:out value ="${project.getBudget()}"/></li>
     </ul>
     <!-- display form if user has not bidded before -->
-    <%if(!project.userHasBid(userId)){%>
-        <form action="userBidProjectCtrl" method="GET">
-            <label for="bidAmount">Bid Amount:</label>
-            <input type="number" id="bidAmount" name="bidAmount"/>
-            <input type="hidden" name="projectId" value="<%=project.getId()%>"/>
-            <button>Submit</button>
-        </form>
-    <%}%>
-<%}%>
+    <c:choose>
+    <c:when test = "${!project.userHasBid(userId)}">
+    <form action="userBidProjectCtrl" method="GET">
+        <label for="bidAmount">Bid Amount:</label>
+        <input type="number" id="bidAmount" name="bidAmount"/>
+        <input type="hidden" name="projectId" value="<c:out value="${project.getId()}"/>"/>
+        <button>Submit</button>
+    </form>
+    </c:when>
+    </c:choose>
+</c:otherwise>
+</c:choose>
 </body>
 </html>

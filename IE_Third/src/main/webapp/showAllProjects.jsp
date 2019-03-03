@@ -7,21 +7,27 @@
   Time: 9:49 AM
   To change this template use File | Settings | File Templates.
 --%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    if(!GetRepo.isSetRepo){
-        GetRepo.print("not setRepo showAllUsers.jsp");
-        request.getRequestDispatcher("").forward(request, response);
-    }
-%>
+<%--<%--%>
+    <%--if(!GetRepo.isSetRepo){--%>
+        <%--GetRepo.print("not setRepo showAllUsers.jsp");--%>
+        <%--request.getRequestDispatcher("").forward(request, response);--%>
+    <%--}--%>
+<%--%>--%>
+<c:choose>
+<c:when test="${!GetRepo.isSetRepo}">
+<c:out value="${GetRepo.print(\"not setRepo showAllProjects.jsp\")}" />
+<c:out value="${request.getRequestDispatcher(\"\").forward(request, response)}" />
+</c:when>
+</c:choose>
 <html>
 <head>
     <title>مشاهده تمام پروژه ها</title>
 </head>
 <body>
-<%GetRepo.print("showAllProjects.jsp");
-    ArrayList<Project> matchingProjects = (ArrayList<Project>) request.getAttribute("projects");
-%>
+<c:out value="${GetRepo.print(\"showAllProjects.jsp\")}"/>
 
 <form action="showAllUsersCtrl" method="GET">
     <button>مشاهده تمام کاربران</button>
@@ -39,19 +45,21 @@
         <th>budget</th>
         <th>مشاهده</th>
     </tr>
-    <%for(Project project: matchingProjects){%>
-        <tr>
-            <th><%=project.getId()%></th>
-            <th><%=project.getTitle()%></th>
-            <th><%=project.getBudget()%></th>
-            <th>
-                <form action="showSpecifiedProjectCtrl" method="GET">
-                    <input type="hidden" name="projectId" value="<%= project.getId()%>"/>
-                    <button>مشاهده</button>
-                </form>
-            </th>
-        </tr>
-    <%}%>
+    <c:forEach var="project" items="${projects}">
+    <%--<%for(Project project: matchingProjects){%>--%>
+    <tr>
+        <th><c:out value="${project.getId()}"/></th>
+        <th><c:out value="${project.getTitle()}"/></th>
+        <th><c:out value="${project.getBudget()}"/></th>
+        <th>
+            <form action="showSpecifiedProjectCtrl" method="GET">
+                <input type="hidden" name="projectId" value="<c:out value="${project.getId()}"/>"/>
+                <button>مشاهده</button>
+            </form>
+        </th>
+    </tr>
+    </c:forEach>
+    <%--<%}%>--%>
 </table>
 </body>
 </html>

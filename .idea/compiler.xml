@@ -9,6 +9,7 @@
         <module name="IE" />
         <module name="IE_firstProject" />
         <module name="IE_Projects" />
+        <module name="ie_third" />
       </profile>
     </annotationProcessing>
   </component>

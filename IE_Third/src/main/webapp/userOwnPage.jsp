@@ -12,12 +12,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    if(!GetRepo.isSetRepo){
-        GetRepo.print("not setRepo userOwnPage.jsp");
-        request.getRequestDispatcher("").forward(request, response);
-    }
-%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page isELIgnored="false" %>
+<c:choose>
+    <c:when test="${!GetRepo.isSetRepo}">
+        <c:out value="${GetRepo.print(\"not setRepo userOwnPage.jsp\")}" />
+        <c:out value="${request.getRequestDispatcher(\"\").forward(request, response)}" />
+    </c:when>
+</c:choose>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -25,13 +27,17 @@
 </head>
 </head>
 <body>
-<%System.out.println("userPage#######################3");%>
-<%if(request.getAttribute("deleteMsg") != null){%>
-    <h3 style="color: blue"><%=request.getAttribute("deleteMsg")%></h3>
-<%}%>
-<%if(request.getAttribute("addMsg") != null){%>
-    <h3 style="color: blue"><%=request.getAttribute("addMsg")%></h3>
-<%}%>
+<c:out value ="${System.out.println(\"userOwnPage\")}"/>
+<c:choose>
+    <c:when test = "${not empty deleteMsg}">
+        <h3 style="color: blue"><c:out value="${deleteMsg}"/></h3>
+    </c:when>
+</c:choose>
+<c:choose>
+    <c:when test = "${not empty addMsg}">
+        <h3 style="color: blue"><c:out value ="${addMsg}"/></h3>
+    </c:when>
+</c:choose>
     <form action="showAllUsersCtrl" method="GET">
         <button>مشاهده تمام کاربران</button>
     </form>
@@ -43,40 +49,39 @@
     </form>
     <ul>
 
-        <li>id: <%=UsersRepo.getInstance().getLoginUser().getId()%></li>
-        <li>first name: <%=UsersRepo.getInstance().getLoginUser().getFirstName()%></li>
-        <li>last name: <%=UsersRepo.getInstance().getLoginUser().getLastName()%></li>
-        <li>jobTitle: <%=UsersRepo.getInstance().getLoginUser().getJobTitle()%></li>
-        <li>bio: <%=UsersRepo.getInstance().getLoginUser().getBio()%></li>
+        <li>id: <c:out value ="${UsersRepo.getInstance().getLoginUser().getId()}"/></li>
+        <li>first name: <c:out value="${UsersRepo.getInstance().getLoginUser().getFirstName()}"/></li>
+        <li>last name: <c:out value="${UsersRepo.getInstance().getLoginUser().getLastName()}"/></li>
+        <li>jobTitle: <c:out value="${UsersRepo.getInstance().getLoginUser().getJobTitle()}"/></li>
+        <li>bio: <c:out value="${UsersRepo.getInstance().getLoginUser().getBio()}"/></li>
         <li>
             skills:
             <ul>
-                <%for(UserSkill userSkill:UsersRepo.getInstance().getLoginUser().getSkills().values()){%>
+                <c:forEach var = "userSkill" items = "${UsersRepo.getInstance().getLoginUser().getSkills().values()}">
                     <li>
-                        <%=userSkill.getName()%>: <%=userSkill.getEndorsedCount()%>
+                        <c:out value="${userSkill.getName()}"/>: <c:out value="${userSkill.getEndorsedCount()}"/>
                         <form action="deleteSkill" method="GET">
-                            <input type="hidden" name="userSkill" value="<%=userSkill.getName()%>">
+                            <input type="hidden" name="userSkill" value="<c:out value="${userSkill.getName()}"/>">
                             <button>Delete</button>
                         </form>
                     </li>
-                <%}%>
+                </c:forEach>
             </ul>
         </li>
     </ul>
     Add Skill:
-    <%ArrayList<Skill> skills = SkillsRepo.getInstance().getSkills();%>
+    <%--<%ArrayList<Skill> skills = SkillsRepo.getInstance().getSkills();%>--%>
     <form action="addSkillCtrl" method="GET">
         <select name="skillName">
-            <%for(Skill skill: skills){
-                if(UsersRepo.getInstance().getLoginUser().getSkills().get(skill.getName()) == null){
-            %>
-                <option value="<%=skill.getName()%>"><%=skill.getName()%></option>
-                <%}
-            }%>
+            <c:forEach var = "skill" items="${SkillsRepo.getInstance().getSkills()}">
+                <c:choose>
+                    <c:when test="${empty (UsersRepo.getInstance().getLoginUser().getSkills().get(skill.getName()))}">
+                        <option value="<c:out value="${skill.getName()}"/>"><c:out value="${skill.getName()}"/></option>
+                    </c:when>
+                </c:choose>
+            </c:forEach>
         </select>
         <button>Add</button>
     </form>
-<% GetRepo.print("userOwnPage Finished");
-%>
 </body>
 </html>
