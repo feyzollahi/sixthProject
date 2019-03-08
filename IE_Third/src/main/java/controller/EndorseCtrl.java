@@ -35,6 +35,6 @@ public class EndorseCtrl extends HttpServlet {
         request.setAttribute("endorseMsg","skill " + "\"" + skillName + "\"" + " of user " + user.getFirstName()
                 + " " + user.getLastName() + " was endoresed by user " + loginUser.getFirstName()
                 + " " + loginUser.getLastName());
-        request.getRequestDispatcher("userGuestPage.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
     }
 }

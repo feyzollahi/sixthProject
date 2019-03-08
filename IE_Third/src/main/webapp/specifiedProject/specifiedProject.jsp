@@ -24,7 +24,7 @@
 <form action="homeServlet" method="GET">
     <button>مشاهده صفحه اول</button>
 </form>
-<form action="userOwnPage.jsp" method="GET">
+<form action="jsp/userOwnPage.jsp" method="GET">
     <button>پروفایل</button>
 </form>
 <c:set var="projectId" value = "${request.getParameter(\"projectId\")}"/>

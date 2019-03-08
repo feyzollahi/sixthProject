@@ -33,7 +33,7 @@ public class UserBidProjectCtrl extends HttpServlet {
         GetRepo.print("bidAmount = " + bidAmount);
         if(bidAmount == null || Integer.valueOf(bidAmount) < 0){
             request.setAttribute("BidErrorMsg", "Bid amount is not set since invalid value of bid amount.");
-            request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+            request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
         }
         try {
             Bid bid = new Bid(UsersRepo.getInstance().getLoginUser(), project, Integer.valueOf(bidAmount));
@@ -50,7 +50,7 @@ public class UserBidProjectCtrl extends HttpServlet {
             request.setAttribute("project", project);
             request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
 
-            request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+            request.getRequestDispatcher("specified/specifiedProject.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -34,7 +34,7 @@
 <form action="showAllProjects" method="GET">
     <button>مشاهده تمام پروژه ها</button>
 </form>
-<form action="userOwnPage.jsp" method="GET">
+<form action="jsp/userOwnPage.jsp" method="GET">
     <button>پروفایل</button>
 </form>
 <%--<h2 style="color: blue;"><%=user.getFirstName() + " " + user.getLastName()%> خوش آمدی </h2>--%>

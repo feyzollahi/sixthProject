@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 
-@WebServlet("/")
+@WebServlet("/home")
 public class homeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -36,7 +36,7 @@ public class homeServlet extends HttpServlet {
                 UsersRepo.getInstance().setLoginUser("1");//ali sharifzadeh
             }
             request.setAttribute("user", UsersRepo.getInstance().getLoginUser());
-            request.getRequestDispatcher("homePage.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/homePage.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

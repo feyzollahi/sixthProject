@@ -21,6 +21,6 @@ public class ShowAllUsersCtrl extends HttpServlet {
         ArrayList<User> users = UsersRepo.getInstance().getAllUsers();
         request.setAttribute("users", users);
         request.setAttribute("loginUser", UsersRepo.getInstance().getLoginUser());
-        request.getRequestDispatcher("showAllUsers.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/showAllUsers.jsp").forward(request, response);
     }
 }

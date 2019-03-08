@@ -33,7 +33,7 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
                 request.setAttribute("project", ProjectsRepo.getInstance().getProjectById(projectId));
                 request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
                 GetRepo.print("specifiedPro send");
-                request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+                request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,7 +41,7 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
             User user = UsersRepo.getInstance().getLoginUser();
             request.setAttribute("forbiddenMsg", "Sorry!\n " + user.getFirstName() + " " + user.getLastName()
              + " can not see the project! because he/she does not have enough skills for it.");
-            request.getRequestDispatcher("specifiedProject.jsp").forward(request, response);
+            request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
 
         }
     }

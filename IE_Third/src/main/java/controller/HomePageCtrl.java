@@ -22,7 +22,7 @@ public class HomePageCtrl extends HttpServlet {
         GetRepo.print("HomePageCtrl");
         if(!GetRepo.isSetRepo || UsersRepo.getInstance().getLoginUser() != null){
             GetRepo.print("not setRepo");
-            request.getRequestDispatcher("").forward(request, response);
+            request.getRequestDispatcher("home").forward(request, response);
         }
         String userId = (String) request.getParameter("userId");
         try {
@@ -32,7 +32,7 @@ public class HomePageCtrl extends HttpServlet {
             UsersRepo.getInstance().logOutAlUsers();
             UsersRepo.getInstance().setLoginUser(userId);
             GetRepo.print("user " + UsersRepo.getInstance().getLoginUser().getLastName() + " is login");
-            request.getRequestDispatcher("userOwnPage.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
 
         } catch (UserNotFound userNotFound) {
             userNotFound.printStackTrace();

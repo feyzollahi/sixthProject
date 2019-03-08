@@ -21,7 +21,7 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!GetRepo.isSetRepo){
             GetRepo.print("not setRepo ShowSpecifiedUserCtrl");
-            request.getRequestDispatcher("").forward(request, response);
+            request.getRequestDispatcher("home").forward(request, response);
         }
         GetRepo.print("showSpecifiedUserCtrl");
         String userId = request.getParameter("userId");
@@ -30,10 +30,10 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
             GetRepo.print(UsersRepo.getInstance().getLoginUser().getFirstName() + UsersRepo.getInstance().getLoginUser().getLastName() + "is login");
             GetRepo.print("user " + user.getFirstName() + " " + user.getLastName() + " is login" + user.isLogin());
             if(user.isLogin()){
-                request.getRequestDispatcher("userOwnPage.jsp").forward(request, response);
+                request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
             }
             else{
-                request.getRequestDispatcher("userGuestPage.jsp").forward(request, response);
+                request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
             }
         } catch (UserNotFound userNotFound) {
             userNotFound.printStackTrace();

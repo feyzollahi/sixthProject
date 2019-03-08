@@ -23,7 +23,7 @@ public class ShowAllProjects extends HttpServlet {
         try {
             matchingProjects = ProjectsRepo.getInstance().getProjectFilteredByUserSkills(UsersRepo.getInstance().getLoginUser());
             request.setAttribute("projects", matchingProjects);
-            request.getRequestDispatcher("showAllProjects.jsp").forward(request, response);
+            request.getRequestDispatcher("jsp/showAllProjects.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

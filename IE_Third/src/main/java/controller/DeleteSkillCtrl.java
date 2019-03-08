@@ -29,7 +29,7 @@ public class DeleteSkillCtrl extends HttpServlet {
         }
         request.setAttribute("deleteMsg","skill " + "\"" + skillName + "\"" + " was removed from user " + user.getFirstName()
         + " " + user.getLastName() + " skills list");
-        request.getRequestDispatcher("userOwnPage.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
 
     }
 }

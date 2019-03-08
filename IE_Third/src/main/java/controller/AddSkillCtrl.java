@@ -25,6 +25,6 @@ public class AddSkillCtrl extends HttpServlet {
         user.addSkill(new UserSkill(skillName));
         request.setAttribute("addMsg", "skill " + "\"" + skillName + "\"" + " was added to user " + user.getFirstName()
                 + " " + user.getLastName() + " skills list");
-        request.getRequestDispatcher("userOwnPage.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
     }
 }
