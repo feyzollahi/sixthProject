@@ -52,6 +52,9 @@ public class User {
     public boolean isLogin() {
         return isLogin;
     }
+    public boolean hasSkill(String skillName){
+        return this.skills.get(skillName) != null;
+    }
     public void removeSkill(String skillName) throws SkillNotFound {
         if(this.skills.get(skillName) == null)
             throw new SkillNotFound();

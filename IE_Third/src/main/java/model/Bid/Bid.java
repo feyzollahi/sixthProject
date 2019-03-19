@@ -26,7 +26,7 @@ public class Bid {
         this.biddingUser = user;
         this.project = project;
     }
-    public Bid(User user, Project project, int bidAmount) throws Exception{
+    public Bid(User user, Project project, int bidAmount){
         this.biddingUser = user;
         this.project = project;
         this.bidAmount = bidAmount;

@@ -16,7 +16,19 @@ import java.io.IOException;
 @WebServlet("/endorseCtrl")
 public class EndorseCtrl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        String skillName = request.getParameter("skillName");
+        String userId = request.getParameter("userId");
+        User loginUser = UsersRepo.getInstance().getLoginUser();
+        User user = null;
+        try {
+            user = UsersRepo.getInstance().getUserById(userId);
+            user.addEndorserToSkills(skillName, loginUser);
+            response.setStatus(200);
+        } catch (UserNotFound | UserSkillNotFound userNotFound) {
+            userNotFound.printStackTrace();
+            GetRepo.print("Exception EndorserCtrl");
+            response.setStatus(404);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

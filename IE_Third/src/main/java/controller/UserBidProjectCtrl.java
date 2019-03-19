@@ -1,6 +1,7 @@
 package controller;
 
 import model.Bid.Bid;
+import model.Exceptions.ProjectNotFound;
 import model.Project.Project;
 import model.Repo.GetRepo;
 import model.Repo.ProjectsRepo;
@@ -25,35 +26,30 @@ public class UserBidProjectCtrl extends HttpServlet {
         Project project = null;
         try {
             project = ProjectsRepo.getInstance().getProjectById(projectId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ProjectNotFound projectNotFound) {
+            projectNotFound.printStackTrace();
+            response.setStatus(404, "project not found");
+            return;
         }
         String bidAmount = request.getParameter("bidAmount");
         User user = UsersRepo.getInstance().getLoginUser();
         GetRepo.print("bidAmount = " + bidAmount);
         if(bidAmount == null || Integer.valueOf(bidAmount) < 0){
             request.setAttribute("BidErrorMsg", "Bid amount is not set since invalid value of bid amount.");
-            request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
+            response.setStatus(400);//bad request
+            return;
         }
-        try {
+
             Bid bid = new Bid(UsersRepo.getInstance().getLoginUser(), project, Integer.valueOf(bidAmount));
             if(!bid.isValid()){
-                request.setAttribute("BidInvalidMsg", "Bid amount is more than project budget.");
+                response.setStatus(400, "more than project budget");
             }
             else {
                 GetRepo.print("bid user = " + bid.getBiddingUser().getLastName());
                 project.addBid(bid);
                 UsersRepo.getInstance().getLoginUser().addBid(bid);
-                request.setAttribute("BidMsg", "bid of user " + user.getFirstName() + " " + user.getLastName()
-                        + " is set");
+                response.setStatus(200);
+
             }
-            request.setAttribute("project", project);
-            request.setAttribute("userId", UsersRepo.getInstance().getLoginUser().getId());
-
-            request.getRequestDispatcher("specified/specifiedProject.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 }

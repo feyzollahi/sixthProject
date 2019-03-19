@@ -12,10 +12,10 @@ import java.util.HashMap;
 public class ProjectsRepo {
     private static final String projectRepoUrlText = "http://142.93.134.194:8000/joboonja/project";
     private static ProjectsRepo singleProjectsRepo = null;
-    private ProjectsRepo() throws Exception {
+    private ProjectsRepo() {
         this.projects = new HashMap<String, Project>();
     }
-    public static ProjectsRepo getInstance() throws Exception {
+    public static ProjectsRepo getInstance(){
         if(singleProjectsRepo == null)
             singleProjectsRepo = new ProjectsRepo();
         return singleProjectsRepo;

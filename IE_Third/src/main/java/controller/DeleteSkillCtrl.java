@@ -3,6 +3,7 @@ package controller;
 import model.Exceptions.SkillNotFound;
 import model.Repo.GetRepo;
 import model.Repo.UsersRepo;
+import model.Skill.UserSkill;
 import model.User.User;
 
 import javax.servlet.ServletException;
@@ -11,9 +12,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet("/deleteSkill")
 public class DeleteSkillCtrl extends HttpServlet {
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = UsersRepo.getInstance().getLoginUser();
+        String skillName = request.getParameter("userSkill");
+        System.out.println("skillName = " + skillName);
+        ArrayList<UserSkill> uskills = new ArrayList<>(user.getSkills().values());
+        for(UserSkill userSkill: uskills){
+            System.out.println(userSkill.getName());
+        }
+        try {
+            user.deleteSkill(skillName);
+            response.setStatus(200);
+        } catch (SkillNotFound skillNotFound) {
+            skillNotFound.printStackTrace();
+            response.setStatus(404);
+        }
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
