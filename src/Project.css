@@ -69,6 +69,12 @@
 	display: inline;
 	color: #707070;
 }
+.time-expired-prograph-time{
+    font-weight: 400;
+	font-size: 19px;
+	display: inline;
+	color: #FF4949;
+}
 
 .project-all-details{
     min-height: calc(100px + 10vh);
@@ -219,6 +225,18 @@
 	font-size: 16px;
 	font-weight: 900;
 }
+.project-bid-response-pragraph-time-expired{
+    color: #FA091F;
+    display: inline;
+	margin-right: 25px;
+	font-size: 24px;
+}
+.project-bid-response-pragraph-sent-before{
+    color: green;
+    display: inline;
+	margin-right: 25px;
+	font-size: 24px;
+}
 .project-bid-submit-button{
 	background-color: #00AEBE;
 	height: 50px;
@@ -280,7 +298,7 @@
 	.skill-list .label{
 		height: 38px;
 	}
-	.time-remain-prograph, .time-remain-prograph-time, .project-value-prograph{
+	.time-remain-prograph, .time-remain-prograph-time, .time-expired-prograph-time, .project-value-prograph{
 		font-size: 15px;
 	}
 	.project-icons{
@@ -333,7 +351,7 @@
 	.project-skill .signUpPragraph-div{
 		margin-bottom: 2vh;
 	}
-	.time-remain-prograph, .time-remain-prograph-time, .project-value-prograph ,.skill-list-item-div .skill-list-paragraph, .skill-list .label{
+	.time-remain-prograph, .time-remain-prograph-time , .time-expired-prograph-time , .project-value-prograph ,.skill-list-item-div .skill-list-paragraph, .skill-list .label{
 		font-size: 15px;
 	}
 	.project-description-header-pragraph{
