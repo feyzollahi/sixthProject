@@ -20,16 +20,47 @@ export default class Project extends Component<any, State> {
     static projectDataJson: any = "projectTitle";
     static timeRemainForBid:number[];
     static projectSkillItemsJSX: any = [];
+     getProjectFooterInBidNotSendAndTimeRemain = () => {return (<div className="project-bid">
+                                                                    <h3 className="project-bid-offer-hard-name">ثبت پیشنهاد</h3>
+                                                                    <div className="project-offer">
+                                                                    <form onSubmit={e => this.submitForm(e)}>
+                                                                        <div className="project-input-buffer-div">
+                                                                            <input className="project-bid-amount-input" onChange={e => this.handleBidInputChange(e)} type="text" name="project-offer" placeholder="پیشنهاد خود را وارد کنید" />
+                                                                            <p className="project-toman-hard-name">تومان</p>
+                                                                        </div>
+                                                                        <input type="submit" value="ارسال" className="project-bid-submit-button" />
+                                                                    </form>
+                                                                    </div>
+                                                                </div>);}
+    getProjectFooterInBidTimeExpired = () => {
+        return (<div className="project-bid">
+                    <img className="project-icons" src={red_danger} alt="time finished" />
+                    <p className="project-bid-response-pragraph-time-expired">مهلت ارسال پیشنهاد برای این پروژه به پایان رسیده است!</p>
+                </div>);
+                                            }
+    getProjectFooterInBidSentBefore = () => {
+        return (<div className="project-bid">
+                    <img className="project-icons" src={green_tick} alt="تایید" />
+                    <p className="project-bid-response-pragraph-sent-before">شما قبلا پیشنهاد خود را به ثبت رسانده اید</p>
+                </div>);
+                                        }
+    getProjectFooterInBidSentNow = () => {
+        return (<div className="project-bid">
+                    <img className="project-icons" src={green_tick} alt="تایید" />
+                    <p className="project-bid-response-pragraph-sent-before">شما با موفقیت پیشنهاد خود را به ثبت رساندید</p>
+                </div>);
+    }
+
     constructor(props: any){
         super(props);
         this.state = {bidState: "not-yet", humanTimeRemain: [],
          budget: 0, description: "", projectSkills: [],
           projectSkillItemsJSX: null, imageUrlTxt: ""
-        , bidInput: ""};
+        , bidInput: "", humanTimeRemainStr: ""};
           var self = this;
           axios.get("http://localhost:8080/showSpecifiedProjectCtrl",{
               params: {
-                  projectId: "a1f824a0-d650-483a-bbd1-91c4145e3f9a"
+                  projectId: "f3ff09df-5e47-4400-afa9-0ab314245a37"
               }
           })
           .then(function(resp){
@@ -48,11 +79,12 @@ export default class Project extends Component<any, State> {
                 imageUrlTxt: Project.projectDataJson.imageUrlText});
               
               if(time > Project.projectDataJson.deadline){
-                  self.setState({bidState: "bid-time-expired"});
+                  self.setState({bidState: "bid-time-expired", humanTimeRemainStr: "مهلت تمام شده"});
+                  console.log("bid-time-expired");
               }
               else{
-                self.setState({humanTimeRemain: self.miliSecondToHumanTime(Project.projectDataJson.deadline - time)});
-                
+                self.setState({humanTimeRemain: self.miliSecondToHumanTime(Project.projectDataJson.deadline - time), humanTimeRemainStr: self.humanTimeToStr(self.miliSecondToHumanTime(Project.projectDataJson.deadline - time))});
+                console.log(self.state.humanTimeRemainStr + " new");
                 if(Project.projectDataJson.userBid === true){
                     self.setState({bidState: "bid-in-past"});
                 }
@@ -101,7 +133,6 @@ export default class Project extends Component<any, State> {
 
                 console.log(timeStr);
             }
-            console.log(persianJs("۳۴۵").persianNumber().toString()); //returns: 345
             if(humanTimeArr[2] != 0){
                 timeStr +=  minuteStr + " دقیقه ";
                 timeStr += " و ";
@@ -117,17 +148,61 @@ export default class Project extends Component<any, State> {
             var self = this;
             axios.get("http://localhost:8080/userBidProjectCtrl",{
                 params: {
-                    projectId: "a1f824a0-d650-483a-bbd1-91c4145e3f9a",
+                    projectId: "f3ff09df-5e47-4400-afa9-0ab314245a37",
                     bidAmount: self.state.bidInput
                 }
             })
             .then(function(resp){
-                console.log(resp);
+                if(resp.status == 200){
+                    self.setState({bidState: "bid-send-now"});
+                    console.log("bid-send");
+                    axios.get("http://localhost:8080/showSpecifiedProjectCtrl",{
+                        params: {
+                            projectId: "f3ff09df-5e47-4400-afa9-0ab314245a37"
+                        }
+                    })
+                    .then(function(resp){
+                        console.log(resp);
+                    });
+                }
             });
             e.preventDefault();
         }
+        static hs:any;
   render() {
+
+    
     var budgetStr = "بودجه: " + persianJs(this.state.budget.toString()).englishNumber().toString() + " تومان";
+    var timeIcon: any = "";
+    var humanTimeRemainStr:string = this.state.humanTimeRemainStr;
+    var time_remain_class = "time-remain-prograph-time";
+    var projectFooter: any;
+    console.log("render call");
+    switch(this.state.bidState){
+        case "not-yet":
+            timeIcon = black_deadline;
+            projectFooter = this.getProjectFooterInBidNotSendAndTimeRemain();
+            break;
+        case "bid-in-past":
+            timeIcon = black_deadline;
+            projectFooter = this.getProjectFooterInBidSentBefore();
+            break;
+        case "bid-time-expired":
+            timeIcon = red_deadline;
+            humanTimeRemainStr: "مهلت تمام شده";
+            time_remain_class = "time-expired-prograph-time";
+            projectFooter = this.getProjectFooterInBidTimeExpired();
+            console.log("exp");
+            break;
+        case "bid-send-now":
+            timeIcon = black_deadline;
+            projectFooter = this.getProjectFooterInBidSentNow();
+            break;
+        default:
+    }
+    console.log("  def  " + humanTimeRemainStr);
+
+
     return (
         <div>
         <meta charSet="UTF-8" />
@@ -151,8 +226,8 @@ export default class Project extends Component<any, State> {
                   </div>
                   <div className="project-details-div&quot;">
                     <div className="time-remain-div">
-                      <img className="project-icons" src={black_deadline} alt="deadline-icon" />
-                      <p className="time-remain-prograph">زمان باقی مانده:</p><p className="time-remain-prograph-time"> {this.humanTimeToStr(this.state.humanTimeRemain)} </p><p />
+                      <img className="project-icons" src={timeIcon} alt="deadline-icon" />
+                      <p className="time-remain-prograph">{this.state.bidState != "bid-time-expired" ? "زمان باقی مانده:": ""}</p><p className={time_remain_class}> {humanTimeRemainStr} </p><p />
                     </div>
                     <div className="project-value-div">
                       <img className="project-icons" src={blue_money_bag} alt="money-bag-icon" />
@@ -180,18 +255,7 @@ export default class Project extends Component<any, State> {
             </div>
               </div>
               <div className="project-footer">
-                <div className="project-bid">
-                  <h3 className="project-bid-offer-hard-name">ثبت پیشنهاد</h3>
-                  <div className="project-offer">
-                    <form onSubmit={e => this.submitForm(e)}>
-                        <div className="project-input-buffer-div">
-                            <input className="project-bid-amount-input" onChange={e => this.handleBidInputChange(e)} type="text" name="project-offer" placeholder="پیشنهاد خود را وارد کنید" />
-                            <p className="project-toman-hard-name">تومان</p>
-                        </div>
-                        <input type="submit" value="ارسال" className="project-bid-submit-button" />
-                    </form>
-                  </div>
-                </div>
+                    {projectFooter}
               </div>
             </div>
           </div>
@@ -208,6 +272,7 @@ interface Props{
 interface State{
     bidState: string;
     humanTimeRemain:number[];
+    humanTimeRemainStr: string;
     budget:number;
     description: string;
     projectSkills : ProjectSkill[];
