@@ -1,6 +1,8 @@
 package model.Repo;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.BufferedReader;
@@ -36,5 +38,18 @@ public class GetRepo {
         skillsRepo.setRepo();
         UsersRepo usersRepo = UsersRepo.getInstance();
         usersRepo.setRepo();
+    }
+    public static JSONObject mergeJSONObjects(JSONObject json1, JSONObject json2) {
+        JSONObject mergedJSON = new JSONObject();
+        try {
+            mergedJSON = new JSONObject(json1, JSONObject.getNames(json1));
+            for (String crunchifyKey : JSONObject.getNames(json2)) {
+                mergedJSON.put(crunchifyKey, json2.get(crunchifyKey));
+            }
+
+        } catch (JSONException e) {
+            throw new RuntimeException("JSON Exception" + e);
+        }
+        return mergedJSON;
     }
 }

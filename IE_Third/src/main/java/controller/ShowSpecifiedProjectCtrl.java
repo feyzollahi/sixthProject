@@ -7,6 +7,9 @@ import model.Repo.GetRepo;
 import model.Repo.ProjectsRepo;
 import model.Repo.UsersRepo;
 import model.User.User;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import springController.ProjectCompleteData;
 
 import javax.servlet.ServletException;
@@ -47,14 +50,24 @@ public class ShowSpecifiedProjectCtrl extends HttpServlet {
                     GetRepo.print("specifiedPro send");
                     response.setHeader("Content-Type", "application/json; charset=UTF-8");
                     Project project = ProjectsRepo.getInstance().getProjectById(projectId);
+
                     ProjectCompleteData projectCompleteData = new ProjectCompleteData(project.getId(), project.getTitle()
                             , project.getDescription(), project.getImageUrlText(), project.getBudget());
                     response.setStatus(200);
-
                     ObjectMapper om = new ObjectMapper();
-                    String json = om.writeValueAsString(projectCompleteData);
+                    String json = om.writeValueAsString(project);
+                    JSONParser jsonParser = new JSONParser();
+                    JSONObject projectJson = null;
+                    try {
+                        projectJson = (JSONObject) jsonParser.parse(json);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    boolean isLoginUserBid = project.userHasBid(UsersRepo.getInstance().getLoginUser().getId());
+                    projectJson.put("userBid", isLoginUserBid);
+                    String finalJson = projectJson.toString();
                     PrintWriter writer = response.getWriter();
-                    writer.print(json);
+                    writer.print(finalJson);
                     writer.flush();
 //                    request.getRequestDispatcher("specifiedProject/specifiedProject.jsp").forward(request, response);
 

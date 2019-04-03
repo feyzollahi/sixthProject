@@ -43,17 +43,18 @@ public class ShowSpecifiedUserCtrl extends HttpServlet {
 
             ObjectMapper om = new ObjectMapper();
             String json = om.writeValueAsString(userCompleteData);
+            GetRepo.print(json);
             PrintWriter writer = response.getWriter();
             writer.print(json);
             writer.flush();
             GetRepo.print(UsersRepo.getInstance().getLoginUser().getFirstName() + UsersRepo.getInstance().getLoginUser().getLastName() + "is login");
             GetRepo.print("user " + user.getFirstName() + " " + user.getLastName() + " is login" + user.isLogin());
-            if(user.isLogin()){
-                request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
-            }
-            else{
-                request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
-            }
+//            if(user.isLogin()){
+//                request.getRequestDispatcher("jsp/userOwnPage.jsp").forward(request, response);
+//            }
+//            else{
+//                request.getRequestDispatcher("jsp/userGuestPage.jsp").forward(request, response);
+//            }
         } catch (UserNotFound userNotFound) {
             userNotFound.printStackTrace();
             response.setStatus(404);
