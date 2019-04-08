@@ -1,0 +1,84 @@
+.jobOonjaHomeBackGroundParagraphDiv{
+    display: block;
+    text-align: right;
+    margin-top: 3vh;
+}
+[data-reactroot] {
+    font-size: 16px;
+}
+
+.jobOonjaHomeMiddleBackGround{
+    background-color: #B0F0F2;
+    height: 35vh;
+    box-shadow: inset 0px 0px 15px 2px #A9E6E9;
+}
+.jobOonjaHomeBackGroundParagraph{
+    color: #00858C;
+    font-size: -webkit-xxx-large;
+    font-size: -moz-xxx-large;
+    font-weight: 900;
+    margin-top: 20px;
+}
+.searchInputDiv{
+    display: flex;
+    align-items: flex-end;
+    width: 80%;
+    margin: 5vh 15vw 3vh 0vw;
+}
+.searchInputDiv .input-container{
+    min-width: 90%;
+    background-color: #D1F9FA;
+    border-bottom: 3px #00858C solid;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px; 
+}
+.searchInputDiv .input-container > input[type="text"]{
+    width: 85%;
+    height: 7vh;
+    background-color: inherit;
+    border: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    color: #6CB4B5;
+    font-weight: bolder;
+    font-size: 2.5rem;
+    padding: 10px; 
+}
+.searchInputDiv .input-container  .submitBuutonDiv input[type="submit"]{
+    width: 90%;
+    height: 5vh;
+    background-color: inherit;
+    border: 0px;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    background-color: #00AEBE;
+    color: white;
+    font-size: 2.5rem;
+}
+.searchInputDiv .input-container .submitBuutonDiv{
+    background-color: #D1F9FA;
+    width: 15%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+.jobOonjaHomeMiddleBackGround .container {
+    display: block;
+    height: 100%;
+}
+.project-summary-list{
+    display: inline-block;
+    width: min-content;
+    margin: -5vh 1vw 0vh 0vh;
+}
+.user-summary-list{
+    display: inline-block;
+    margin-right: 10vw;
+}
+.user-project-list{
+    display: flex;
+    background-color: #F6F6F6;
+}

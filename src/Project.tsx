@@ -15,7 +15,7 @@ import blue_money_bag from './images/icons/blue-money-bag.png';
 import Footer from './Footer';
 import faker from 'faker';
 import axios from 'axios';
-import persianJs from 'persianjs';
+// import persianJs from 'persianjs';
 export default class Project extends Component<any, State> {
     static projectDataJson: any = "projectTitle";
     static timeRemainForBid:number[];
@@ -95,7 +95,7 @@ export default class Project extends Component<any, State> {
              console.log(self.state.bidState);
               
           }).catch(error => {
-              console.log(error)
+              console.log(error);
           });
         }
         miliSecondToHumanTime = (miliseconds:number) => {
@@ -118,6 +118,8 @@ export default class Project extends Component<any, State> {
             if(humanTimeArr.length == 0){
                 return "";
             }
+            var persianJs = require('persianjs');
+
             var dayStr = persianJs(humanTimeArr[0].toString()).englishNumber().toString();
             var hourStr = persianJs(humanTimeArr[1].toString()).englishNumber().toString();
             var minuteStr = persianJs(humanTimeArr[2].toString()).englishNumber().toString();
@@ -171,7 +173,8 @@ export default class Project extends Component<any, State> {
         static hs:any;
   render() {
 
-    
+    var persianJs = require('persianjs');
+
     var budgetStr = "بودجه: " + persianJs(this.state.budget.toString()).englishNumber().toString() + " تومان";
     var timeIcon: any = "";
     var humanTimeRemainStr:string = this.state.humanTimeRemainStr;
