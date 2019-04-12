@@ -10,13 +10,13 @@ export default class Header extends Component {
         <header>
           <div className="container h-100">
             <div id="header" className="row align-items-center justify-content-between">
-              <a id="logo" className="col-auto d-flex align-items-center" href="/"><img src={logo} alt="logo" /></a>
+              <a id="logo" className="col-auto d-flex align-items-center" href="/Home"><img src={logo} alt="logo" /></a>
               <nav className="col-auto row align-items-center">
                 <div id="profile" className="col-auto">
-                  <Link to="/Profie">حساب کاربری</Link>
+                  <Link to="/Profile" style={{fontSize: "2rem"}}>حساب کاربری</Link>
                 </div>
                 <div id="logout" className="col-auto">
-                  <a href="/Login">خروج</a>
+                  <a href="/Login" style={{fontSize: "2rem"}}>خروج</a>
                 </div>
               </nav>
             </div>
