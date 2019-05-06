@@ -52,7 +52,7 @@ export default class Home extends Component<any, State> {
             var projectsJson:ProjectJson[]  = [];
             resp.data.forEach(function(project: any){
               var projectJson: ProjectJson = {title: project.title, deadline: project.deadline
-              , id: project.id, description: project.description, budget: project.budget
+              , creationDate: project.creationDate, id: project.id, description: project.description, budget: project.budget
               , imageUrlText: project.imageUrlText, skills: project.skills};
               projectsJson.push(projectJson);
               var budget = persianJs(project.budget).englishNumber().toString();
@@ -61,7 +61,22 @@ export default class Home extends Component<any, State> {
                 title={project.title} skills={project.skills}
                  imageUrlText={project.imageUrlText}/>);
             });
+            projectsJson.sort(function(a, b){
+              if(a.creationDate > b.creationDate)
+                return -1;
+              else
+                return 1;
+            });
+            projectSumArr = [];
+            projectsJson.forEach(function(projectJson){
+              var budget =  persianJs(projectJson.budget).englishNumber().toString();
+              projectSumArr.push(<ProjectSummaryItem deadline={projectJson.deadline}
+                budget={budget} id={projectJson.id} description={projectJson.description}
+                 title={projectJson.title} skills={projectJson.skills}
+                  imageUrlText={projectJson.imageUrlText}/>);
+            });
             console.log(projectSumArr);
+
             self.setState({ProjectSummaryItemsJSX: projectSumArr, projectsJsonData: projectsJson});
         }).catch(error => {
             console.log(error);
@@ -72,48 +87,86 @@ export default class Home extends Component<any, State> {
       var searchVal = e.target.value;
       var usersJson: UserJson[] = this.state.usersJsonData;
       var selectedUsers:UserJson[] = [];
-      usersJson.forEach(function(user){
-        if(user.firstName.startsWith(searchVal) || user.jobTitle.startsWith(searchVal)
-           || user.lastName.startsWith(searchVal) || searchVal == ""){
-            selectedUsers.push(user);
+      var self = this;
+      console.log(searchVal)
+      axios.get("http://localhost:8080/searchUser",{
+        params:{
+          searchVal: searchVal
         }
-      });
-      var usersJsxArr :any = [];
-      selectedUsers.forEach(function(user){
-        usersJsxArr.push(<UserSummaryItem name={user.firstName + " " + user.lastName}
-                       jobTitle={user.jobTitle} userId={user.userId}/>);
       })
+          .then(function(resp){
+              console.log(resp);
+              var userSumArr: any[] = [];
+              var usersJson: UserJson[] = [];
+              resp.data.forEach(function(user: any){
+                var firstName = user.firstName;
+                var lastName = user.lastName;
+                var jobTitle = user.jobTitle;
+                var userJson: UserJson = {firstName: firstName, lastName: lastName
+                , jobTitle: jobTitle, userId: user.id};
+                  usersJson.push(userJson); 
+                userSumArr.push(<UserSummaryItem userId={user.id} name={firstName + " " + lastName} jobTitle={jobTitle}/>
+                );
+              });
+              self.setState({UserSummaryItemsJSX: userSumArr, usersJsonData: usersJson});
+          }).catch(error => {
+              console.log(error);
+          });
+        
+      
 
-      this.setState({UserSummaryItemsJSX: usersJsxArr});
 
   }
     searchProjectWithProjectTitle(e: any): void{
+      console.log(e);
+      console.log("serachProject");
       var input: any = document.querySelector(".input-container .searchInput");
       var searchVal:string = input.value;
+      console.log(searchVal);
       var self = this;
       var projectsJson: ProjectJson[] = this.state.projectsJsonData;
       var selectedProjects:ProjectJson[] = [];
       console.log(projectsJson);
-      projectsJson.forEach(function(project){
-        console.log(searchVal);
-        console.log(project.title);
-        console.log(project.title.includes(searchVal));
-        if(project.title.startsWith(searchVal) || project.title.includes(searchVal)
-         || searchVal == ""){
-          selectedProjects.push(project);
-        }
-      });
-      var projectsJsxArr :any = [];
-      var persianJs = require('persianjs');
-      selectedProjects.forEach(function(project){
-        var budget: number = persianJs(project.budget).englishNumber().toString();
-        projectsJsxArr.push(<ProjectSummaryItem deadline={project.deadline}
-                            budget={budget} id={project.id} description={project.description}
-                            title={project.title} skills={project.skills}
-                              imageUrlText={project.imageUrlText}/>);
+      axios.get("http://localhost:8080/searchProject",{
+        params: searchVal
       })
+        .then(function(resp){
+            console.log(resp);
+            var projectSumArr: any[] = [];
+            var persianJs = require('persianjs');
+            var projectsJson:ProjectJson[]  = [];
+            resp.data.forEach(function(project: any){
+              var projectJson: ProjectJson = {title: project.title, deadline: project.deadline
+              , creationDate: project.creationDate, id: project.id, description: project.description, budget: project.budget
+              , imageUrlText: project.imageUrlText, skills: project.skills};
+              projectsJson.push(projectJson);
+              var budget = persianJs(project.budget).englishNumber().toString();
+              projectSumArr.push(<ProjectSummaryItem deadline={project.deadline}
+               budget={budget} id={project.id} description={project.description}
+                title={project.title} skills={project.skills}
+                 imageUrlText={project.imageUrlText}/>);
+            });
+            projectsJson.sort(function(a, b){
+              if(a.creationDate > b.creationDate)
+                return -1;
+              else
+                return 1;
+            });
+            projectSumArr = [];
+            projectsJson.forEach(function(projectJson){
+              var budget =  persianJs(projectJson.budget).englishNumber().toString();
+              projectSumArr.push(<ProjectSummaryItem deadline={projectJson.deadline}
+                budget={budget} id={projectJson.id} description={projectJson.description}
+                 title={projectJson.title} skills={projectJson.skills}
+                  imageUrlText={projectJson.imageUrlText}/>);
+            });
+            console.log(projectSumArr);
 
-      this.setState({ProjectSummaryItemsJSX: projectsJsxArr});
+            self.setState({ProjectSummaryItemsJSX: projectSumArr, projectsJsonData: projectsJson});
+        }).catch(error => {
+            console.log(error);
+        });
+      
     }
   render() {
     return (
@@ -173,6 +226,7 @@ interface State{
 }
 interface ProjectJson{
   deadline: number;
+  creationDate: number;
   budget: number;
   id: string;
   description: string;

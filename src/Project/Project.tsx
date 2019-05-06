@@ -152,10 +152,12 @@ export default class Project extends Component<any, State> {
         }
         submitForm(e: React.FormEvent<HTMLFormElement>): void{
             var self = this;
-
+            var pathName:string = this.props.location.pathname;
+            var split = pathName.split("/");
+            var projectId = split[2];
             axios.get("http://localhost:8080/userBidProjectCtrl",{
                 params: {
-                    projectId: "f3ff09df-5e47-4400-afa9-0ab314245a37",
+                    projectId: projectId,
                     bidAmount: self.state.bidInput
                 }
             })
@@ -165,7 +167,7 @@ export default class Project extends Component<any, State> {
                     console.log("bid-send");
                     axios.get("http://localhost:8080/showSpecifiedProjectCtrl",{
                         params: {
-                            projectId: "f3ff09df-5e47-4400-afa9-0ab314245a37"
+                            projectId: projectId
                         }
                     })
                     .then(function(resp){
